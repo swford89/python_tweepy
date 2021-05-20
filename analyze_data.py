@@ -8,7 +8,7 @@ def wrap_print(indented_title=str, preferred_width=int, print_text=str):
     print(text_wrapper.fill(print_text))
     return
 
-# create path to json file
+# designate the path to the file you want to read from
 tweet_path = 'twitter-data-master/data.json'
 
 # read/load tweet data from json file
@@ -20,14 +20,14 @@ with open(tweet_path, 'r') as read_file:
 
     # iterate through list of dictionaries containing data for individual tweets 
     for tweet in tweet_list:
-
+        # count the tweets
         total_tweets += 1
 
         # parsing retweets
         if 'retweeted_status' in tweet.keys():
             retweet_title = '\nRetweet text: \n\n'
             og_title = '\nOriginal Tweet: \n\n'
-            count_title = '\nCharacter count: '
+            count_title = '\nCharacter count of retweet: '
             longest_title = 'Longest word: '
             word_list = tweet['full_text'].split()
             char_count = 0
@@ -40,7 +40,7 @@ with open(tweet_path, 'r') as read_file:
                 if word.startswith('https') or word.startswith('@') or word.startswith('#'):    # ignore hashtags, handles
                     pass
                 elif word[-1] in string.punctuation:                                            # remove end punctuation before printing longest word
-                    word = word.replace(word[-1], '')
+                    word = word.replace(word[-1], '')                                           # then check word length
                     if len(word) > longest_count:
                         longest_count = len(word)
                         longest_word = word
@@ -60,20 +60,21 @@ with open(tweet_path, 'r') as read_file:
         # parsing normal tweets
         else:
             full_text_title = '\nTweet text: \n\n'
-            char_title = '\nCharacter count: '
+            char_title = '\nCharacter count of tweet: '
             longest_title = 'Longest word: '
             word_list = tweet['full_text'].split()
             char_count = 0
             longest_count = 0
             longest_word = ''
 
+            # get char count
             for word in word_list:
                 char_count += len(word)
-                if word.startswith('https') or word.startswith('@') or word.startswith('#'):
+                if word.startswith('https') or word.startswith('@') or word.startswith('#'):    # ignore hashtages, handles
                     pass
-                elif word[-1] in string.punctuation:
-                    word = word.replace(word[-1], '')
-                    if len(word) > longest_count:
+                elif word[-1] in string.punctuation:                                            
+                    word = word.replace(word[-1], '')                                           # remove end punctuation
+                    if len(word) > longest_count:                                               # then check word length
                         longest_count = len(word)
                         longest_word = word
                         total_chars += len(word)
