@@ -8,7 +8,7 @@ def wrap_print(indented_title=str, preferred_width=int, print_text=str):
     print(text_wrapper.fill(print_text))
     return
 
-# designate the path to the file you want to read from
+# designate the path to a file you want to read from
 tweet_path = 'twitter-data-master/data.json'
 
 # read/load tweet data from json file
@@ -29,7 +29,7 @@ with open(tweet_path, 'r') as read_file:
             og_title = '\nOriginal Tweet: \n\n'
             count_title = '\nCharacter count of retweet: '
             longest_title = 'Longest word: '
-            word_list = tweet['full_text'].split()
+            word_list = tweet['retweeted_status']['full_text'].split()
             char_count = 0
             longest_word = ''
             longest_count = 0
@@ -39,7 +39,7 @@ with open(tweet_path, 'r') as read_file:
                 char_count += len(word)
                 if word.startswith('https') or word.startswith('@') or word.startswith('#'):    # ignore hashtags, handles
                     pass
-                elif word[-1] in string.punctuation:                                            # remove end punctuation before printing longest word
+                elif word[-1] in string.punctuation:                                            # remove end punctuation if it's there
                     word = word.replace(word[-1], '')                                           # then check word length
                     if len(word) > longest_count:
                         longest_count = len(word)
@@ -73,7 +73,7 @@ with open(tweet_path, 'r') as read_file:
                 if word.startswith('https') or word.startswith('@') or word.startswith('#'):    # ignore hashtages, handles
                     pass
                 elif word[-1] in string.punctuation:                                            
-                    word = word.replace(word[-1], '')                                           # remove end punctuation
+                    word = word.replace(word[-1], '')                                           # remove end punctuation if it's there
                     if len(word) > longest_count:                                               # then check word length
                         longest_count = len(word)
                         longest_word = word
@@ -91,5 +91,5 @@ with open(tweet_path, 'r') as read_file:
     print(f'''
     Total tweets: {total_tweets:>20}
     Total characters: {total_chars:>16}
-    Character average per tweet: {total_chars/total_tweets:>7}
+    Character average per tweet: {total_chars/total_tweets:>5}
     ''')
